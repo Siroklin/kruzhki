@@ -253,7 +253,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
       <textarea id="note" placeholder="Например: нужны в подарок, упакуйте по одной"></textarea>
     </label>
     <div class="err" id="err" role="alert" hidden></div>
-    <button class="btn" type="submit">Отправить предзаказ</button>
+    <button class="btn" type="submit" id="submitBtn">Хочу кружку! ☕</button>
     <p class="hint" id="sent" role="status" hidden></p>
   </form>
 
@@ -330,30 +330,44 @@ var CONFIG = {
 
   $("f").addEventListener("submit", function(ev){
     ev.preventDefault();
-    var name = $("name").value.trim(), contact = $("contact").value.trim(), city = $("city").value.trim(), err = $("err"), sent = $("sent");
+    var name = $("name").value.trim(), contact = $("contact").value.trim(), city = $("city").value.trim(), err = $("err"), sent = $("sent"), btn = $("submitBtn");
     if (!name || !contact) { err.hidden = false; err.textContent = "Укажите имя и телефон или Telegram, чтобы мы могли связаться."; return; }
     err.hidden = true;
     var qty = clampQty();
-    var text = ["Предзаказ: новогодние кружки",
-      "Количество: " + qty + " шт.",
-      "Имя: " + name,
-      "Контакт: " + contact,
-      "Рисунок: " + $("design").value,
-      "Получение: " + $("deliv").value,
-      "Город: " + (city || "не указан"),
-      "Пожелания: " + ($("note").value.trim() || "нет")].join("\n");
-    sent.hidden = false;
-    if (CONFIG.email) {
-      sent.textContent = "Открываем письмо с вашей заявкой. Если оно не открылось, напишите на " + CONFIG.email + " и укажите количество и рисунок.";
+    var data = {
+      "Количество": qty + " шт.",
+      "Имя": name,
+      "Контакт": contact,
+      "Рисунок": $("design").value,
+      "Получение": $("deliv").value,
+      "Город": city || "не указан",
+      "Пожелания": $("note").value.trim() || "нет",
+      "_subject": "Предзаказ кружек: " + qty + " шт., " + name,
+      "_template": "table",
+      "_captcha": "false"
+    };
+    var text = "Предзаказ: новогодние кружки\nКоличество: " + data["Количество"] + "\nИмя: " + name + "\nКонтакт: " + contact + "\nРисунок: " + data["Рисунок"] + "\nПолучение: " + data["Получение"] + "\nГород: " + data["Город"] + "\nПожелания: " + data["Пожелания"];
+    function fallback(){
+      sent.hidden = false;
+      sent.textContent = "Не получилось отправить заявку автоматически. Открываем письмо, нажмите в нём «Отправить». Если оно не открылось, напишите на " + CONFIG.email + ".";
       location.href = "mailto:" + CONFIG.email + "?subject=" + encodeURIComponent("Предзаказ: новогодние кружки") + "&body=" + encodeURIComponent(text);
-    } else if (CONFIG.telegram) {
-      sent.textContent = "Открываем Telegram с вашей заявкой.";
-      location.href = "https://t.me/" + encodeURIComponent(CONFIG.telegram) + "?text=" + encodeURIComponent(text);
-    } else {
-      sent.textContent = "Напишите тому, кто прислал вам эту ссылку, и укажите количество и рисунок.";
     }
+    btn.disabled = true; btn.textContent = "Отправляем…"; sent.hidden = true;
+    fetch("https://formsubmit.co/ajax/" + CONFIG.email, {
+      method: "POST",
+      headers: {"Content-Type": "application/json", "Accept": "application/json"},
+      body: JSON.stringify(data)
+    }).then(function(r){ return r.json().then(function(j){ return {ok: r.ok, j: j}; }); })
+    .then(function(res){
+      btn.disabled = false; btn.textContent = "Хочу кружку! ☕";
+      if (res.ok && (res.j.success === true || res.j.success === "true")) {
+        sent.hidden = false;
+        sent.textContent = "Спасибо, " + name + "! Заявка отправлена, мы скоро свяжемся с вами.";
+        $("f").reset(); $("qty").value = 1;
+      } else { fallback(); }
+    })
+    .catch(function(){ btn.disabled = false; btn.textContent = "Хочу кружку! ☕"; fallback(); });
   });
-
   // гирлянда
   var g = $("garland"), cols = ["#ff3b5c","#ffd234","#43a8ff","#2fbf5b","#ff7fae"];
   var count = Math.ceil(Math.max(g.clientWidth || 1000, 400) / 34);
