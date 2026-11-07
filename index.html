@@ -253,20 +253,10 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
       <textarea id="note" placeholder="Например: нужны в подарок, упакуйте по одной"></textarea>
     </label>
     <div class="err" id="err" role="alert" hidden></div>
-    <button class="btn" type="submit">Подготовить предзаказ</button>
+    <button class="btn" type="submit">Отправить предзаказ</button>
+    <p class="hint" id="sent" role="status" hidden></p>
   </form>
 
-  <div class="result" id="result" hidden>
-    <h3>Почти готово: отправьте заявку продавцу</h3>
-    <p>Страница не отправляет заказ сама. Нажмите кнопку ниже или скопируйте текст и пришлите его в мессенджер или на почту.</p>
-    <pre id="orderText"></pre>
-    <div class="row">
-      <a class="btn" id="tgBtn" href="#" target="_blank" rel="noopener" hidden>Отправить в Telegram</a>
-      <a class="btn ghost" id="mailBtn" href="#" hidden>Отправить по почте</a>
-      <button class="btn ghost" type="button" id="copyBtn">Скопировать текст</button>
-    </div>
-    <p class="hint" id="copyMsg" role="status"></p>
-  </div>
 </section>
 
 <section id="contacts">
@@ -338,14 +328,13 @@ var CONFIG = {
     catch(e){ b.textContent = "Скопируйте адрес из строки браузера"; }
   };
 
-  var current = "";
   $("f").addEventListener("submit", function(ev){
     ev.preventDefault();
-    var name = $("name").value.trim(), contact = $("contact").value.trim(), city = $("city").value.trim(), err = $("err");
+    var name = $("name").value.trim(), contact = $("contact").value.trim(), city = $("city").value.trim(), err = $("err"), sent = $("sent");
     if (!name || !contact) { err.hidden = false; err.textContent = "Укажите имя и телефон или Telegram, чтобы мы могли связаться."; return; }
     err.hidden = true;
     var qty = clampQty();
-    current = ["Предзаказ: новогодние кружки",
+    var text = ["Предзаказ: новогодние кружки",
       "Количество: " + qty + " шт.",
       "Имя: " + name,
       "Контакт: " + contact,
@@ -353,15 +342,17 @@ var CONFIG = {
       "Получение: " + $("deliv").value,
       "Город: " + (city || "не указан"),
       "Пожелания: " + ($("note").value.trim() || "нет")].join("\n");
-    $("orderText").textContent = current;
-    var tg = $("tgBtn"), ml = $("mailBtn");
-    if (CONFIG.telegram) { tg.hidden = false; tg.href = "https://t.me/" + encodeURIComponent(CONFIG.telegram) + "?text=" + encodeURIComponent(current); } else tg.hidden = true;
-    if (CONFIG.email) { ml.hidden = false; ml.href = "mailto:" + CONFIG.email + "?subject=" + encodeURIComponent("Предзаказ: новогодние кружки") + "&body=" + encodeURIComponent(current); } else ml.hidden = true;
-    $("copyMsg").textContent = "";
-    var res = $("result"); res.hidden = false;
-    res.scrollIntoView({behavior:"smooth", block:"nearest"});
+    sent.hidden = false;
+    if (CONFIG.email) {
+      sent.textContent = "Открываем письмо с вашей заявкой. Если оно не открылось, напишите на " + CONFIG.email + " и укажите количество и рисунок.";
+      location.href = "mailto:" + CONFIG.email + "?subject=" + encodeURIComponent("Предзаказ: новогодние кружки") + "&body=" + encodeURIComponent(text);
+    } else if (CONFIG.telegram) {
+      sent.textContent = "Открываем Telegram с вашей заявкой.";
+      location.href = "https://t.me/" + encodeURIComponent(CONFIG.telegram) + "?text=" + encodeURIComponent(text);
+    } else {
+      sent.textContent = "Напишите тому, кто прислал вам эту ссылку, и укажите количество и рисунок.";
+    }
   });
-  $("copyBtn").onclick = function(){ copyText(current, $("copyMsg"), "Скопировано. Вставьте в сообщение продавцу."); };
 
   // гирлянда
   var g = $("garland"), cols = ["#ff3b5c","#ffd234","#43a8ff","#2fbf5b","#ff7fae"];
