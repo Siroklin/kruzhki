@@ -273,6 +273,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
 <script>
 /* ======= НАСТРОЙКИ ПРОДАВЦА: впишите свои данные между кавычками ======= */
 var CONFIG = {
+  endpoint: "https://script.google.com/macros/s/AKfycbxL3GRwnyNmCeKds8L4sQmUYeMIrDbAB8Z243ZzmzpPYpgLO7kl1GhpjT_8-Hmz1l8Dlg/exec",  // адрес приёма заявок (Google Таблица + письмо)
   price: "",          // например "590 ₽" (пусто = показывается «скоро»)
   telegram: "",       // имя без @, например "ivan_mugs"
   phone: "",          // например "+7 900 000-00-00"
@@ -334,39 +335,24 @@ var CONFIG = {
     if (!name || !contact) { err.hidden = false; err.textContent = "Укажите имя и телефон или Telegram, чтобы мы могли связаться."; return; }
     err.hidden = true;
     var qty = clampQty();
-    var data = {
-      "Количество": qty + " шт.",
-      "Имя": name,
-      "Контакт": contact,
-      "Рисунок": $("design").value,
-      "Получение": $("deliv").value,
-      "Город": city || "не указан",
-      "Пожелания": $("note").value.trim() || "нет",
-      "_subject": "Предзаказ кружек: " + qty + " шт., " + name,
-      "_template": "table",
-      "_captcha": "false"
-    };
-    var text = "Предзаказ: новогодние кружки\nКоличество: " + data["Количество"] + "\nИмя: " + name + "\nКонтакт: " + contact + "\nРисунок: " + data["Рисунок"] + "\nПолучение: " + data["Получение"] + "\nГород: " + data["Город"] + "\nПожелания: " + data["Пожелания"];
+    var data = {name: name, contact: contact, qty: qty + " шт.", design: $("design").value, deliv: $("deliv").value, city: city || "не указан", note: $("note").value.trim() || "нет"};
+    var text = "Предзаказ: новогодние кружки\nКоличество: " + data.qty + "\nИмя: " + name + "\nКонтакт: " + contact + "\nРисунок: " + data.design + "\nПолучение: " + data.deliv + "\nГород: " + data.city + "\nПожелания: " + data.note;
     function fallback(){
       sent.hidden = false;
       sent.textContent = "Не получилось отправить заявку автоматически. Открываем письмо, нажмите в нём «Отправить». Если оно не открылось, напишите на " + CONFIG.email + ".";
       location.href = "mailto:" + CONFIG.email + "?subject=" + encodeURIComponent("Предзаказ: новогодние кружки") + "&body=" + encodeURIComponent(text);
     }
+    function reset(){ btn.disabled = false; btn.textContent = "Хочу кружку! ☕"; }
     btn.disabled = true; btn.textContent = "Отправляем…"; sent.hidden = true;
-    fetch("https://formsubmit.co/ajax/" + CONFIG.email, {
-      method: "POST",
-      headers: {"Content-Type": "application/json", "Accept": "application/json"},
-      body: JSON.stringify(data)
-    }).then(function(r){ return r.json().then(function(j){ return {ok: r.ok, j: j}; }); })
-    .then(function(res){
-      btn.disabled = false; btn.textContent = "Хочу кружку! ☕";
-      if (res.ok && (res.j.success === true || res.j.success === "true")) {
-        sent.hidden = false;
-        sent.textContent = "Спасибо, " + name + "! Заявка отправлена, мы скоро свяжемся с вами.";
-        $("f").reset(); $("qty").value = 1;
-      } else { fallback(); }
+    var body = Object.keys(data).map(function(k){ return encodeURIComponent(k) + "=" + encodeURIComponent(data[k]); }).join("&");
+    fetch(CONFIG.endpoint, {method: "POST", mode: "no-cors", headers: {"Content-Type": "application/x-www-form-urlencoded"}, body: body})
+    .then(function(){
+      reset();
+      sent.hidden = false;
+      sent.textContent = "Спасибо, " + name + "! Заявка отправлена, мы скоро свяжемся с вами.";
+      $("f").reset(); $("qty").value = 1;
     })
-    .catch(function(){ btn.disabled = false; btn.textContent = "Хочу кружку! ☕"; fallback(); });
+    .catch(function(){ reset(); fallback(); });
   });
   // гирлянда
   var g = $("garland"), cols = ["#ff3b5c","#ffd234","#43a8ff","#2fbf5b","#ff7fae"];
