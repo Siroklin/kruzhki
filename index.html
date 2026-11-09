@@ -49,6 +49,11 @@ section{padding-block:36px}
 .btn:disabled{opacity:.6;cursor:default}
 .btn.ghost{background:transparent;color:inherit;border:2px solid currentColor;box-shadow:none}
 .hero .btn.ghost{color:#fff}
+.ny{display:inline-block;font:800 clamp(22px,5vw,34px)/1 var(--font-display);letter-spacing:.12em;text-transform:uppercase;color:#10261c;background:linear-gradient(90deg,#ffd234,#ff9bd2,#7fd0ff);padding:8px 18px;border-radius:12px;transform:rotate(-2deg);box-shadow:0 4px 0 rgba(0,0,0,.2);margin-bottom:10px}
+.chips{align-items:center}
+.stamp{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:92px;height:92px;border-radius:50%;background:var(--accent);color:#fff;border:3px dashed #fff;transform:rotate(-8deg);box-shadow:0 4px 0 rgba(0,0,0,.25);line-height:1;text-align:center}
+.stamp b{font:800 24px/1 var(--font-body);white-space:nowrap}
+.stamp span{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
 .row{display:flex;flex-wrap:wrap;gap:12px}
 .tree{display:flex;justify-content:center;min-width:0}
 .tree svg{width:100%;max-width:340px;height:auto;overflow:visible}
@@ -126,6 +131,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
 
 <header class="hero">
   <div>
+    <div class="ny">New Year 2027</div>
     <div class="tag">Тираж 100 штук · до Нового года</div>
     <h1>Новогодние кружки <em>для самых уютных вечеров</em></h1>
     <p class="lead">Яркая глазурованная керамика с Сантой, оленем, пингвином и пряничным человечком. Партия приедет в начале декабря. Оформите предзаказ сейчас, и кружка будет ваша.</p>
@@ -133,6 +139,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
       <span class="chip">Привоз: начало декабря</span>
       <span class="chip">Успеем до 31 декабря</span>
       <span class="chip">4 цвета по 25 штук</span>
+      <span class="stamp" aria-label="Тираж 100 штук"><b>100 шт</b><span>тираж</span></span>
     </div>
     <div class="row">
       <a class="btn" href="#preorder">Оформить предзаказ</a>
