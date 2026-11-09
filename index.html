@@ -205,8 +205,8 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
   <div class="tag">Предзаказ</div>
   <h2>Закрепите кружки за собой</h2>
   <form id="f" novalidate>
-    <label for="name">Ваше имя
-      <input id="name" autocomplete="name" placeholder="Например, Анна">
+    <label for="name">Фамилия и имя <span class="hint">(обязательно)</span>
+      <input id="name" autocomplete="name" required placeholder="Например, Иванова Анна">
     </label>
     <div class="f2">
       <label for="phone">Телефон <span class="hint">(обязательно)</span>
@@ -350,7 +350,7 @@ var CONFIG = {
     var name = $("name").value.trim(), phone = $("phone").value.trim(), email = $("email").value.trim();
     var total = 0; COLORS.forEach(function(c){ total += want[c.key]; });
     function fail(msg){ err.hidden = false; err.textContent = msg; }
-    if (!name) return fail("Укажите ваше имя.");
+    if (name.split(/\s+/).length < 2) return fail("Укажите фамилию и имя полностью.");
     if (phone.replace(/\D/g, "").length < 10) return fail("Укажите телефон с кодом, например +7 900 000-00-00.");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail("Укажите почту в формате name@example.com.");
     if (total < 1) return fail("Выберите хотя бы одну кружку.");
@@ -360,7 +360,7 @@ var CONFIG = {
     btn.disabled = true; btn.textContent = "Отправляем…";
     function done(){ btn.textContent = "Хочу кружку! ☕"; render(); }
     function mailFallback(){
-      var text = "Предзаказ: новогодние кружки\n" + summary + "\nИмя: " + name + "\nТелефон: " + phone + "\nПочта: " + email + "\nПожелания: " + (payload.note || "нет");
+      var text = "Предзаказ: новогодние кружки\n" + summary + "\nФамилия и имя: " + name + "\nТелефон: " + phone + "\nПочта: " + email + "\nПожелания: " + (payload.note || "нет");
       sent.hidden = false;
       sent.textContent = "Не получилось отправить заявку автоматически. Открываем письмо, нажмите в нём «Отправить». Если оно не открылось, напишите на " + CONFIG.email + ".";
       location.href = "mailto:" + CONFIG.email + "?subject=" + encodeURIComponent("Предзаказ: новогодние кружки") + "&body=" + encodeURIComponent(text);
@@ -374,7 +374,7 @@ var CONFIG = {
         $("f").reset();
         done();
         sent.hidden = false;
-        sent.textContent = "Спасибо, " + name + "! Заявка принята: " + summary + ". Мы скоро свяжемся с вами.";
+        sent.textContent = "Спасибо! Заявка принята: " + summary + ". Мы скоро свяжемся с вами.";
       } else if (d && d.error === "soldout") {
         done(); fail("Пока вы оформляли заявку, часть кружек разобрали. Мы обновили остатки, проверьте выбор и отправьте снова.");
       } else if (d && d.error === "fields") {
