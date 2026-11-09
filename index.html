@@ -2,11 +2,11 @@
 <title>Новогодние кружки</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
-/* Layout: blinking garland on top, deep-green festive hero with a big tree, four mug tiles in their own colours, then how-it-works / delivery / form / contacts. */
+/* Layout: blinking garland on top, deep-green festive hero with a big tree, photo and four colour tiles with live stock, then how-it-works / delivery / form / contacts. */
 :root{
   --bg:#effaf3; --surface:#ffffff; --fg:#0e3324; --muted:#46695a; --line:#cfe6d8; --soft:#dff3e6;
   --accent:#e5173f; --accent-fg:#ffffff; --gold:#ffbf1f; --gold-text:#a86b00;
-  --c-green:#2fbf5b; --c-red:#ef3b2d; --c-pink:#ff7fae; --c-blue:#43a8ff;
+  --c-green:#2fbf5b; --c-red:#ff8d7e; --c-pink:#ff7fae; --c-blue:#43a8ff;
   --hero-a:#0c6b43; --hero-b:#07402a; --hero-fg:#ffffff;
   --font-display:Georgia,"Times New Roman",serif; --font-body:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
 }
@@ -28,13 +28,11 @@ a{color:var(--accent)}
 .tag{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--gold-text)}
 section{padding-block:36px}
 
-/* гирлянда */
 .garland{position:relative;height:46px;margin-inline:-16px;overflow:hidden}
 .garland::before{content:"";position:absolute;left:-5%;right:-5%;top:-22px;height:44px;border-bottom:3px solid #2a5a45;border-radius:50%}
 .garland b{position:absolute;top:0;width:14px;height:20px;border-radius:50% 50% 55% 55%;transform-origin:top center;animation:blink 1.8s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1;filter:brightness(1.15) drop-shadow(0 0 6px currentColor)}50%{opacity:.45;filter:none}}
 
-/* hero */
 .hero{background:radial-gradient(120% 90% at 80% 20%,var(--hero-a),var(--hero-b));color:var(--hero-fg);border-radius:28px;
   display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:center;padding:36px 36px 28px;margin-top:6px;overflow:hidden;position:relative}
 .hero h1{font-size:clamp(36px,7vw,62px);margin-block:10px 14px}
@@ -48,6 +46,7 @@ section{padding-block:36px}
   border:0;border-radius:14px;padding:14px 24px;font:800 17px var(--font-body);text-decoration:none;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.18)}
 .btn:hover{filter:brightness(1.08)}
 .btn:active{transform:translateY(2px);box-shadow:0 4px 0 rgba(0,0,0,.18)}
+.btn:disabled{opacity:.6;cursor:default}
 .btn.ghost{background:transparent;color:inherit;border:2px solid currentColor;box-shadow:none}
 .hero .btn.ghost{color:#fff}
 .row{display:flex;flex-wrap:wrap;gap:12px}
@@ -57,17 +56,18 @@ section{padding-block:36px}
 .star{transform-origin:170px 40px;animation:twinkle 2.5s ease-in-out infinite}
 @keyframes twinkle{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.12) rotate(8deg)}}
 
-/* кружки */
+.photo{margin:0 auto 14px;max-width:640px}
+.photo img{width:100%;height:auto;border-radius:22px;display:block;background:var(--soft)}
 .mugs{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.tile{border:0;border-radius:18px;padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;
+.tile{border:0;border-radius:18px;padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;
   font:inherit;color:#10261c;min-width:0;transition:transform .15s}
-.tile:hover{transform:translateY(-4px) rotate(-1deg)}
-.photo{margin:0 0 14px}.photo img{width:100%;height:auto;border-radius:22px;display:block;background:var(--soft)}
-.tile img{width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;filter:drop-shadow(0 8px 8px rgba(0,0,0,.25))}
+.tile:hover:not(:disabled){transform:translateY(-4px) rotate(-1deg)}
 .tile b{font-weight:800;font-size:16px;text-align:center}
-.tile span{font-size:13px;font-weight:700;opacity:.8}
-.t-green{background:var(--c-green)} .t-red{background:#ffb4a8} .t-pink{background:var(--c-pink)} .t-blue{background:var(--c-blue)}
-.t-red{background:#ff8d7e}
+.tile span{font-size:13px;font-weight:700;opacity:.85}
+.tile .left{background:rgba(255,255,255,.65);border-radius:999px;padding:2px 10px;margin-top:4px}
+.t-green{background:var(--c-green)} .t-red{background:var(--c-red)} .t-pink{background:var(--c-pink)} .t-blue{background:var(--c-blue)}
+.tile.sold{background:var(--line);color:var(--muted);cursor:not-allowed}
+.tile.sold .left{background:var(--accent);color:var(--accent-fg);opacity:1}
 
 .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .box{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;min-width:0}
@@ -81,25 +81,31 @@ section{padding-block:36px}
 .steps .box::before{content:counter(s);display:inline-flex;width:36px;height:36px;border-radius:50%;color:#10261c;
   font-weight:800;align-items:center;justify-content:center;margin-bottom:10px;background:var(--gold)}
 .steps .box:nth-child(2)::before{background:var(--c-pink)} .steps .box:nth-child(3)::before{background:var(--c-blue)} .steps .box:nth-child(4)::before{background:var(--c-green)}
-.dl .box:nth-child(1){border-left:6px solid var(--c-green)} .dl .box:nth-child(2){border-left:6px solid var(--c-red)}
-.dl .box:nth-child(3){border-left:6px solid var(--c-blue)} .dl .box:nth-child(4){border-left:6px solid var(--c-pink)}
 .pricebox{margin-top:16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:var(--gold);color:#2a1d00;border-color:transparent}
 .pricebox p{color:#4a3500}
 .price{font-family:var(--font-display);font-size:30px}
+.avito{border-left:6px solid var(--c-green)}
 
 form{background:var(--surface);border:2px solid var(--line);border-radius:22px;padding:24px;display:grid;gap:16px}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 label{display:grid;gap:6px;font-weight:700;font-size:15px;min-width:0}
-input,select,textarea{font:inherit;color:var(--fg);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:11px 12px;width:100%;min-width:0}
+input,textarea{font:inherit;color:var(--fg);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:11px 12px;width:100%;min-width:0}
 textarea{min-height:76px;resize:vertical}
-.qty{display:flex;align-items:center;gap:10px}
+fieldset{border:0;padding:0;margin:0;display:grid;gap:10px;min-width:0}
+legend{font-weight:700;font-size:15px;padding:0;margin-bottom:8px}
+.crow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border:2px solid var(--line);border-radius:14px;padding:10px 12px}
+.dot{width:18px;height:18px;border-radius:50%}
+.crow .nm{font-weight:800;line-height:1.2}
+.crow .nm small{display:block;font-weight:600;color:var(--muted);font-size:13px}
+.crow.sold{opacity:.7;background:var(--soft)}
+.crow.sold .nm small{color:var(--accent);font-weight:800}
+.qty{display:flex;align-items:center;gap:8px}
 .qty button{width:44px;height:44px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--fg);font-size:22px;font-weight:800;cursor:pointer}
-.qty input{text-align:center;width:80px}
+.qty button:disabled{opacity:.35;cursor:default}
+.qty output{min-width:32px;text-align:center;font-weight:800;font-size:20px}
 .hint{font-size:14px;color:var(--muted);font-weight:400}
 .err{color:var(--accent);font-size:14px;font-weight:700}
-.result{margin-top:16px;background:var(--soft);border:3px dashed var(--gold);border-radius:18px;padding:20px;display:grid;gap:14px}
-.result pre{margin:0;white-space:pre-wrap;word-break:break-word;font:15px/1.5 var(--font-body);background:var(--surface);border-radius:10px;padding:14px}
-.result .btn.ghost{color:var(--fg)}
+.ok{font-weight:700}
 footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
 .snow i{position:fixed;top:-10px;width:6px;height:6px;border-radius:50%;background:#fff;opacity:.55;pointer-events:none;animation:fall linear infinite;z-index:5;
   box-shadow:0 0 0 1px rgba(60,130,100,.25)}
@@ -111,7 +117,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
   .tree{order:-1}.tree svg{max-width:240px}
   .grid2,.perks,.f2{grid-template-columns:1fr}
 }
-@media (max-width:420px){.steps{grid-template-columns:1fr}}
+@media (max-width:420px){.steps{grid-template-columns:1fr}.crow{grid-template-columns:auto 1fr}.crow .qty{grid-column:1 / -1;justify-content:flex-end}}
 </style>
 
 <div class="snow" id="snow" aria-hidden="true"></div>
@@ -126,7 +132,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
     <div class="chips">
       <span class="chip">Привоз: начало декабря</span>
       <span class="chip">Успеем до 31 декабря</span>
-      <span class="chip">4 цвета на выбор</span>
+      <span class="chip">4 цвета по 25 штук</span>
     </div>
     <div class="row">
       <a class="btn" href="#preorder">Оформить предзаказ</a>
@@ -164,13 +170,8 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
   <div class="tag">Товар</div>
   <h2>Четыре героя, четыре цвета</h2>
   <figure class="photo"><img src="mugs.webp" width="560" height="454" alt="Четыре новогодние кружки: голубая с оленем, красная с пингвином, зелёная с пряничным человечком, розовая с Сантой"></figure>
-  <div class="mugs">
-    <button class="tile t-green" type="button" data-design="Зелёная: пряничный человечек"><b>Пряничный человечек</b><span>зелёная</span></button>
-    <button class="tile t-red" type="button" data-design="Красная: пингвин"><b>Пингвин</b><span>красная</span></button>
-    <button class="tile t-pink" type="button" data-design="Розовая: Санта"><b>Санта</b><span>розовая</span></button>
-    <button class="tile t-blue" type="button" data-design="Голубая: олень"><b>Рудольф</b><span>голубая</span></button>
-  </div>
-  <p class="hint" style="margin-top:10px">Нажмите на цвет, чтобы выбрать кружку в предзаказе.</p>
+  <div class="mugs" id="tiles"></div>
+  <p class="hint" style="margin-top:10px">Каждого цвета по 25 штук. Нажмите на цвет, чтобы добавить кружку в предзаказ.</p>
   <div class="perks">
     <div class="box"><h3>Глянцевая глазурь</h3><p>Яркий цвет, снежинки и конфетти-горошек, чёрный ободок по краю.</p></div>
     <div class="box"><h3>Идея для подарка</h3><p>Коллегам, друзьям, учителям и родным. Одна кружка или набор на всю семью.</p></div>
@@ -189,74 +190,43 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
     <div class="box"><h3>Предзаказ</h3><p>Заполните форму ниже. Оплата сейчас не требуется.</p></div>
     <div class="box"><h3>Подтверждение</h3><p>Мы свяжемся, подтвердим заказ и договоримся об оплате.</p></div>
     <div class="box"><h3>Партия приезжает</h3><p>В начале декабря. Мы сообщим вам сразу.</p></div>
-    <div class="box"><h3>Получение</h3><p>Заберёте сами или отправим выбранным способом.</p></div>
+    <div class="box"><h3>Получение</h3><p>Отправим вам кружки через Авито Доставку.</p></div>
   </div>
 </section>
 
 <section id="delivery">
   <div class="tag">Доставка и оплата</div>
-  <h2>Выберите, как удобнее</h2>
-  <div class="grid2 dl">
-    <div class="box"><h3>Самовывоз</h3><p>Заберёте кружки лично в удобное время по договорённости.</p></div>
-    <div class="box"><h3>Курьер по городу</h3><p>Привезём по адресу. Стоимость и время согласуем при подтверждении.</p></div>
-    <div class="box"><h3>СДЭК или Почта России</h3><p>Отправка в другой город. Доставка оплачивается по тарифу перевозчика.</p></div>
-    <div class="box"><h3>Авито Доставка</h3><p>Безопасная сделка через Авито. Подойдёт, если вы нашли нас там.</p></div>
-  </div>
-  <div class="box" style="margin-top:16px"><h3>Оплата</h3><p>Цена фиксированная: стоимость кружки умножается на количество. Способ оплаты уточним после предзаказа, когда подтвердим заказ.</p></div>
+  <h2>Всё через Авито</h2>
+  <div class="box avito"><h3>Доставка через Авито</h3><p>Отправляем заказ через Авито Доставку. На Авито вы сами выбираете любую удобную доставку: пункт выдачи, постамат или курьера.</p></div>
+  <div class="box" style="margin-top:16px"><h3>Оплата</h3><p>Цена фиксированная: стоимость кружки умножается на количество. Как оплатить, подскажем после подтверждения заказа.</p></div>
 </section>
 
 <section id="preorder">
   <div class="tag">Предзаказ</div>
   <h2>Закрепите кружки за собой</h2>
   <form id="f" novalidate>
+    <label for="name">Ваше имя
+      <input id="name" autocomplete="name" placeholder="Например, Анна">
+    </label>
     <div class="f2">
-      <label for="name">Ваше имя
-        <input id="name" autocomplete="name" placeholder="Например, Анна">
+      <label for="phone">Телефон <span class="hint">(обязательно)</span>
+        <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 900 000-00-00">
       </label>
-      <label for="contact">Как с вами связаться
-        <input id="contact" autocomplete="tel" placeholder="Телефон или @telegram">
+      <label for="email">Почта <span class="hint">(обязательно)</span>
+        <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com">
       </label>
     </div>
-    <div class="f2">
-      <div>
-        <label for="qty">Сколько кружек <span class="hint">(от 1 до 50)</span></label>
-        <div class="qty" style="margin-top:6px">
-          <button type="button" id="minus" aria-label="Меньше">−</button>
-          <input id="qty" type="number" inputmode="numeric" min="1" max="50" value="1">
-          <button type="button" id="plus" aria-label="Больше">+</button>
-        </div>
-      </div>
-      <label for="deliv">Способ получения
-        <select id="deliv">
-          <option>Самовывоз</option>
-          <option>Курьер по городу</option>
-          <option>СДЭК</option>
-          <option>Почта России</option>
-          <option>Авито Доставка</option>
-        </select>
-      </label>
-    </div>
-    <label for="design">Какой рисунок
-      <select id="design">
-        <option>Любой, на ваш выбор</option>
-        <option>Зелёная: пряничный человечек</option>
-        <option>Красная: пингвин</option>
-        <option>Розовая: Санта</option>
-        <option>Голубая: олень</option>
-      </select>
-      <span class="hint">Если берёте несколько, укажите расклад в пожеланиях.</span>
-    </label>
-    <label for="city">Город <span class="hint">(для доставки и самовывоза)</span>
-      <input id="city" autocomplete="address-level2" placeholder="Ваш город">
-    </label>
+    <fieldset>
+      <legend>Сколько кружек каждого цвета</legend>
+      <div id="rows"></div>
+    </fieldset>
     <label for="note">Пожелания <span class="hint">(необязательно)</span>
-      <textarea id="note" placeholder="Например: нужны в подарок, упакуйте по одной"></textarea>
+      <textarea id="note" placeholder="Например: нужны в подарок"></textarea>
     </label>
     <div class="err" id="err" role="alert" hidden></div>
     <button class="btn" type="submit" id="submitBtn">Хочу кружку! ☕</button>
-    <p class="hint" id="sent" role="status" hidden></p>
+    <p class="ok" id="sent" role="status" hidden></p>
   </form>
-
 </section>
 
 <section id="contacts">
@@ -273,12 +243,12 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
 <script>
 /* ======= НАСТРОЙКИ ПРОДАВЦА: впишите свои данные между кавычками ======= */
 var CONFIG = {
-  endpoint: "https://script.google.com/macros/s/AKfycbxL3GRwnyNmCeKds8L4sQmUYeMIrDbAB8Z243ZzmzpPYpgLO7kl1GhpjT_8-Hmz1l8Dlg/exec",  // адрес приёма заявок (Google Таблица + письмо)
+  endpoint: "https://script.google.com/macros/s/AKfycbxL3GRwnyNmCeKds8L4sQmUYeMIrDbAB8Z243ZzmzpPYpgLO7kl1GhpjT_8-Hmz1l8Dlg/exec",
   price: "",          // например "590 ₽" (пусто = показывается «скоро»)
   telegram: "",       // имя без @, например "ivan_mugs"
   phone: "",          // например "+7 900 000-00-00"
   whatsapp: "",       // номер цифрами, например "79000000000"
-  email: "daniil.siroklin@gmail.com",          // например "mugs@example.com"
+  email: "daniil.siroklin@gmail.com",
   avito: "",          // ссылка на объявление на Авито
   sellerName: ""      // как вас зовут
 };
@@ -286,12 +256,23 @@ var CONFIG = {
 
 (function(){
   var $ = function(id){return document.getElementById(id)};
+  var PER = 25;
+  var COLORS = [
+    {key:"green", cls:"t-green", color:"var(--c-green)", name:"Пряничный человечек", tone:"зелёная"},
+    {key:"red",   cls:"t-red",   color:"var(--c-red)",   name:"Пингвин",             tone:"красная"},
+    {key:"pink",  cls:"t-pink",  color:"var(--c-pink)",  name:"Санта",               tone:"розовая"},
+    {key:"blue",  cls:"t-blue",  color:"var(--c-blue)",  name:"Олень",               tone:"голубая"}
+  ];
+  var left = {green:PER, red:PER, pink:PER, blue:PER};
+  var want = {green:0, red:0, pink:0, blue:0};
 
   if (CONFIG.price) { $("priceVal").textContent = CONFIG.price; }
 
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]}); }
+
+  // контакты
   var list = $("contactList"), n = 0;
   function add(html){ var li = document.createElement("li"); li.innerHTML = html; list.appendChild(li); n++; }
-  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]}); }
   if (CONFIG.sellerName) add("<b>Продавец:</b> " + esc(CONFIG.sellerName));
   if (CONFIG.telegram) add('<b>Telegram:</b> <a href="https://t.me/' + encodeURIComponent(CONFIG.telegram) + '" target="_blank" rel="noopener">@' + esc(CONFIG.telegram) + '</a>');
   if (CONFIG.whatsapp) add('<b>WhatsApp:</b> <a href="https://wa.me/' + encodeURIComponent(CONFIG.whatsapp) + '" target="_blank" rel="noopener">+' + esc(CONFIG.whatsapp) + '</a>');
@@ -300,60 +281,111 @@ var CONFIG = {
   if (CONFIG.avito) add('<b>Авито:</b> <a href="' + esc(CONFIG.avito) + '" target="_blank" rel="noopener">наше объявление</a>');
   if (!n) add("Контакты появятся здесь совсем скоро. Пока напишите тому, кто прислал вам эту ссылку.");
 
-  // выбор кружки по клику на плитку
-  Array.prototype.forEach.call(document.querySelectorAll(".tile"), function(t){
+  // плитки и строки формы
+  var tiles = $("tiles"), rows = $("rows");
+  COLORS.forEach(function(c){
+    var t = document.createElement("button");
+    t.type = "button"; t.className = "tile " + c.cls; t.id = "tile-" + c.key;
+    t.innerHTML = "<b>" + c.name + "</b><span>" + c.tone + "</span><span class=\"left\" id=\"tl-" + c.key + "\"></span>";
     t.addEventListener("click", function(){
-      $("design").value = t.getAttribute("data-design");
+      if (left[c.key] > want[c.key]) { want[c.key]++; render(); }
       $("preorder").scrollIntoView({behavior:"smooth", block:"start"});
     });
+    tiles.appendChild(t);
+
+    var r = document.createElement("div");
+    r.className = "crow"; r.id = "row-" + c.key;
+    r.innerHTML = "<span class=\"dot\" style=\"background:" + c.color + "\"></span>" +
+      "<div class=\"nm\">" + c.name + ", " + c.tone + "<small id=\"rl-" + c.key + "\"></small></div>" +
+      "<div class=\"qty\"><button type=\"button\" id=\"m-" + c.key + "\" aria-label=\"Меньше: " + c.name + "\">−</button>" +
+      "<output id=\"q-" + c.key + "\">0</output>" +
+      "<button type=\"button\" id=\"p-" + c.key + "\" aria-label=\"Больше: " + c.name + "\">+</button></div>";
+    rows.appendChild(r);
+    r.querySelector("#m-" + c.key).addEventListener("click", function(){ if (want[c.key] > 0) { want[c.key]--; render(); } });
+    r.querySelector("#p-" + c.key).addEventListener("click", function(){ if (want[c.key] < left[c.key]) { want[c.key]++; render(); } });
   });
 
-  var q = $("qty");
-  function clampQty(){ var v = parseInt(q.value,10); if (isNaN(v)||v<1) v=1; if (v>50) v=50; q.value = v; return v; }
-  $("minus").onclick = function(){ q.value = Math.max(1, clampQty()-1); };
-  $("plus").onclick = function(){ q.value = Math.min(50, clampQty()+1); };
-  q.addEventListener("change", clampQty);
-
-  function copyText(text, msgEl, okMsg){
-    function fallback(){
-      var r = document.createRange(); r.selectNodeContents($("orderText"));
-      var s = getSelection(); s.removeAllRanges(); s.addRange(r);
-      msgEl.textContent = "Текст выделен. Нажмите «Копировать» в меню.";
-    }
-    try { navigator.clipboard.writeText(text).then(function(){ msgEl.textContent = okMsg; }, fallback); }
-    catch(e){ fallback(); }
+  function render(){
+    var allSold = true;
+    COLORS.forEach(function(c){
+      var k = c.key, sold = left[k] <= 0;
+      if (!sold) allSold = false;
+      if (want[k] > left[k]) want[k] = Math.max(0, left[k]);
+      $("tile-" + k).classList.toggle("sold", sold);
+      $("tile-" + k).disabled = sold;
+      $("tl-" + k).textContent = sold ? "Распродано" : "осталось " + left[k];
+      $("row-" + k).classList.toggle("sold", sold);
+      $("rl-" + k).textContent = sold ? "Распродано" : "осталось " + left[k];
+      $("q-" + k).textContent = want[k];
+      $("m-" + k).disabled = want[k] <= 0;
+      $("p-" + k).disabled = sold || want[k] >= left[k];
+    });
+    $("submitBtn").disabled = allSold;
+    if (allSold) { $("sent").hidden = false; $("sent").textContent = "Все кружки распроданы. Спасибо, что были с нами!"; }
   }
+  render();
+
+  // остатки с сервера (JSONP, без личных данных)
+  function loadStock(){
+    if (!CONFIG.endpoint) return;
+    window.__stock = function(d){
+      if (d && d.ok && d.left) { COLORS.forEach(function(c){ if (typeof d.left[c.key] === "number") left[c.key] = d.left[c.key]; }); render(); }
+    };
+    var s = document.createElement("script");
+    s.src = CONFIG.endpoint + "?callback=__stock&t=" + Date.now();
+    document.head.appendChild(s);
+  }
+  loadStock();
+
   $("share").onclick = function(){
     var b = $("share"), old = b.textContent;
     try { navigator.clipboard.writeText(location.href).then(function(){ b.textContent = "Ссылка скопирована"; setTimeout(function(){b.textContent=old},2000); }, function(){ b.textContent = "Скопируйте адрес из строки браузера"; }); }
     catch(e){ b.textContent = "Скопируйте адрес из строки браузера"; }
   };
 
+  // отправка заявки
   $("f").addEventListener("submit", function(ev){
     ev.preventDefault();
-    var name = $("name").value.trim(), contact = $("contact").value.trim(), city = $("city").value.trim(), err = $("err"), sent = $("sent"), btn = $("submitBtn");
-    if (!name || !contact) { err.hidden = false; err.textContent = "Укажите имя и телефон или Telegram, чтобы мы могли связаться."; return; }
-    err.hidden = true;
-    var qty = clampQty();
-    var data = {name: name, contact: contact, qty: qty + " шт.", design: $("design").value, deliv: $("deliv").value, city: city || "не указан", note: $("note").value.trim() || "нет"};
-    var text = "Предзаказ: новогодние кружки\nКоличество: " + data.qty + "\nИмя: " + name + "\nКонтакт: " + contact + "\nРисунок: " + data.design + "\nПолучение: " + data.deliv + "\nГород: " + data.city + "\nПожелания: " + data.note;
-    function fallback(){
+    var err = $("err"), sent = $("sent"), btn = $("submitBtn");
+    var name = $("name").value.trim(), phone = $("phone").value.trim(), email = $("email").value.trim();
+    var total = 0; COLORS.forEach(function(c){ total += want[c.key]; });
+    function fail(msg){ err.hidden = false; err.textContent = msg; }
+    if (!name) return fail("Укажите ваше имя.");
+    if (phone.replace(/\D/g, "").length < 10) return fail("Укажите телефон с кодом, например +7 900 000-00-00.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail("Укажите почту в формате name@example.com.");
+    if (total < 1) return fail("Выберите хотя бы одну кружку.");
+    err.hidden = true; sent.hidden = true;
+    var payload = {name:name, phone:phone, email:email, note:$("note").value.trim(), qty:{green:want.green, red:want.red, pink:want.pink, blue:want.blue}};
+    var summary = COLORS.filter(function(c){ return want[c.key] > 0; }).map(function(c){ return c.name + " (" + c.tone + ") × " + want[c.key]; }).join(", ");
+    btn.disabled = true; btn.textContent = "Отправляем…";
+    function done(){ btn.textContent = "Хочу кружку! ☕"; render(); }
+    function mailFallback(){
+      var text = "Предзаказ: новогодние кружки\n" + summary + "\nИмя: " + name + "\nТелефон: " + phone + "\nПочта: " + email + "\nПожелания: " + (payload.note || "нет");
       sent.hidden = false;
       sent.textContent = "Не получилось отправить заявку автоматически. Открываем письмо, нажмите в нём «Отправить». Если оно не открылось, напишите на " + CONFIG.email + ".";
       location.href = "mailto:" + CONFIG.email + "?subject=" + encodeURIComponent("Предзаказ: новогодние кружки") + "&body=" + encodeURIComponent(text);
     }
-    function reset(){ btn.disabled = false; btn.textContent = "Хочу кружку! ☕"; }
-    btn.disabled = true; btn.textContent = "Отправляем…"; sent.hidden = true;
-    var body = Object.keys(data).map(function(k){ return encodeURIComponent(k) + "=" + encodeURIComponent(data[k]); }).join("&");
-    fetch(CONFIG.endpoint, {method: "POST", mode: "no-cors", headers: {"Content-Type": "application/x-www-form-urlencoded"}, body: body})
-    .then(function(){
-      reset();
-      sent.hidden = false;
-      sent.textContent = "Спасибо, " + name + "! Заявка отправлена, мы скоро свяжемся с вами.";
-      $("f").reset(); $("qty").value = 1;
+    fetch(CONFIG.endpoint, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload)})
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (d && d.left) { COLORS.forEach(function(c){ if (typeof d.left[c.key] === "number") left[c.key] = d.left[c.key]; }); }
+      if (d && d.ok) {
+        COLORS.forEach(function(c){ want[c.key] = 0; });
+        $("f").reset();
+        done();
+        sent.hidden = false;
+        sent.textContent = "Спасибо, " + name + "! Заявка принята: " + summary + ". Мы скоро свяжемся с вами.";
+      } else if (d && d.error === "soldout") {
+        done(); fail("Пока вы оформляли заявку, часть кружек разобрали. Мы обновили остатки, проверьте выбор и отправьте снова.");
+      } else if (d && d.error === "fields") {
+        done(); fail("Проверьте имя, телефон и почту.");
+      } else {
+        done(); mailFallback();
+      }
     })
-    .catch(function(){ reset(); fallback(); });
+    .catch(function(){ done(); mailFallback(); });
   });
+
   // гирлянда
   var g = $("garland"), cols = ["#ff3b5c","#ffd234","#43a8ff","#2fbf5b","#ff7fae"];
   var count = Math.ceil(Math.max(g.clientWidth || 1000, 400) / 34);
