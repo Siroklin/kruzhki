@@ -57,8 +57,15 @@ section{padding-block:36px}
 .star{transform-origin:170px 40px;animation:twinkle 2.5s ease-in-out infinite}
 @keyframes twinkle{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.12) rotate(8deg)}}
 
-.photo{margin:0 auto 14px;max-width:640px}
-.photo img{width:100%;height:auto;border-radius:22px;display:block;background:var(--soft)}
+.gal{position:relative;margin:0 auto 14px;max-width:640px}
+.gtrack{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:22px;background:var(--soft);-webkit-overflow-scrolling:touch}
+.gtrack::-webkit-scrollbar{display:none}
+.gtrack img{flex:0 0 100%;width:100%;height:auto;aspect-ratio:560/454;object-fit:cover;scroll-snap-align:center;display:block}
+.garr{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.85);color:#10261c;font:700 26px/1 var(--font-body);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25);padding:0 0 3px}
+.gprev{left:10px}.gnext{right:10px}
+.gdots{display:flex;justify-content:center;gap:8px;margin-top:10px}
+.gdots button{width:10px;height:10px;border-radius:50%;border:0;padding:0;background:var(--muted);opacity:.45;cursor:pointer}
+.gdots button[aria-current=true]{background:var(--accent);opacity:1}
 .mugs{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .tile{border:0;border-radius:18px;padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;
   font:inherit;color:#10261c;min-width:0;transition:transform .15s}
@@ -171,7 +178,16 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
 <section id="product">
   <div class="tag">Товар</div>
   <h2>Четыре героя, четыре цвета</h2>
-  <figure class="photo"><img src="mugs.webp" width="560" height="454" alt="Четыре новогодние кружки: голубая с оленем, красная с пингвином, зелёная с пряничным человечком, розовая с Сантой"></figure>
+  <div class="gal" id="gal" aria-roledescription="карусель" aria-label="Фото кружек">
+    <div class="gtrack" id="gtrack">
+      <img src="mugs.webp" width="560" height="454" alt="Четыре новогодние кружки: голубая с оленем, красная с пингвином, зелёная с пряничным человечком, розовая с Сантой">
+      <img src="mugs2.webp" width="560" height="454" loading="lazy" alt="Кружки по две: зелёная и красная сверху, розовая и голубая снизу">
+      <img src="mugs3.webp" width="560" height="454" loading="lazy" alt="Голубая кружка с оленем на ладони, видно размер">
+    </div>
+    <button type="button" class="garr gprev" id="gprev" aria-label="Предыдущее фото">‹</button>
+    <button type="button" class="garr gnext" id="gnext" aria-label="Следующее фото">›</button>
+    <div class="gdots" id="gdots"></div>
+  </div>
   <div class="mugs" id="tiles"></div>
   <p class="hint" style="margin-top:10px">Каждого цвета по 25 штук. Нажмите на цвет, чтобы добавить кружку в предзаказ.</p>
   <div class="perks">
@@ -411,6 +427,16 @@ var CONFIG = {
     var sz = 4+Math.random()*6; s.style.width = s.style.height = sz+"px";
     snow.appendChild(s);
   }
+})();
+(function(){
+  var tr=document.getElementById("gtrack"), dots=document.getElementById("gdots"), n=tr.children.length, bs=[];
+  for(var i=0;i<n;i++){(function(i){var b=document.createElement("button");b.type="button";b.setAttribute("aria-label","Фото "+(i+1));b.onclick=function(){go(i)};dots.appendChild(b);bs.push(b)})(i)}
+  function cur(){return Math.round(tr.scrollLeft/tr.clientWidth)}
+  function go(i){i=(i+n)%n;tr.scrollTo({left:i*tr.clientWidth,behavior:"smooth"})}
+  function mark(){var c=cur();bs.forEach(function(b,i){b.setAttribute("aria-current",i===c)})}
+  tr.addEventListener("scroll",mark,{passive:true});mark();
+  document.getElementById("gprev").onclick=function(){go(cur()-1)};
+  document.getElementById("gnext").onclick=function(){go(cur()+1)};
 })();
 </script>
 </body></html>
