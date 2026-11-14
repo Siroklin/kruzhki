@@ -79,7 +79,7 @@ section{padding-block:36px}
 .tile:hover:not(:disabled){transform:translateY(-4px) rotate(-1deg)}
 .tile b{font-weight:800;font-size:16px;text-align:center}
 .tile span{font-size:13px;font-weight:700;opacity:.85}
-.tile .left{background:rgba(255,255,255,.65);border-radius:999px;padding:2px 10px;margin-top:4px}
+.tile .left{background:rgba(255,255,255,.65);border-radius:999px;padding:2px 10px;margin-top:auto}
 .t-green{background:var(--c-green)} .t-red{background:var(--c-red)} .t-pink{background:var(--c-pink)} .t-blue{background:var(--c-blue)}
 .tile.sold{background:var(--line);color:var(--muted);cursor:not-allowed}
 .tile.sold .left{background:var(--accent);color:var(--accent-fg);opacity:1}
@@ -128,7 +128,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
   box-shadow:0 0 0 1px rgba(60,130,100,.25)}
 @keyframes fall{to{transform:translateY(110vh)}}
 @media (prefers-reduced-motion:reduce){.snow,.garland b{display:none}.bulb,.star{animation:none}}
-@media (max-width:820px){.mugs{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:1fr 1fr}}
+@media (max-width:820px){.tile b{min-height:2.5em;display:flex;align-items:center;justify-content:center}.mugs{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:1fr 1fr}}
 @media (max-width:760px){
   .hero{grid-template-columns:1fr;padding:26px 20px 18px}
   .tree{order:-1}.tree svg{max-width:240px}
