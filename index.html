@@ -118,6 +118,7 @@ legend{font-weight:700;font-size:15px;padding:0;margin-bottom:8px}
 .qty button{width:44px;height:44px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--fg);font-size:22px;font-weight:800;cursor:pointer}
 .qty button:disabled{opacity:.35;cursor:default}
 .qty output{min-width:32px;text-align:center;font-weight:800;font-size:20px}
+.thanks{border-left:6px solid var(--gold)}
 .how{margin:0 0 16px;border-left:6px solid var(--accent)}
 .hint{font-size:14px;color:var(--muted);font-weight:400}
 .err{color:var(--accent);font-size:14px;font-weight:700}
@@ -264,6 +265,19 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
   </form>
 </section>
 
+<section id="thanks">
+  <div class="tag">Спасибо</div>
+  <h2>Маленькая просьба</h2>
+  <div class="box thanks">
+    <h3>Расскажите друзьям</h3>
+    <p>Купили кружку? Не забудьте скинуть ссылку на эту страницу тем, кому она тоже может понравиться.</p>
+    <div class="care"><span>Друзьям</span><span>Коллегам</span><span>Родным</span><span>Соседям</span><span>Однокурсникам</span><span>В рабочий чат</span><span>В чат дома</span><span>В родительский чат</span></div>
+    <p style="margin-top:14px">Каждая покупка очень поддерживает автора и помогает развиваться. Спасибо вам огромное!</p>
+    <p style="margin-top:8px">Кружек всего 100 штук, поэтому любимый цвет лучше закрепить заранее и рассказать друзьям, пока он не закончился.</p>
+    <div class="row" style="margin-top:16px"><button class="btn" type="button" id="share2">Скопировать ссылку</button></div>
+  </div>
+</section>
+
 <section id="contacts">
   <div class="tag">Контакты</div>
   <h2>Связаться с продавцом</h2>
@@ -372,11 +386,13 @@ var CONFIG = {
   }
   loadStock();
 
-  $("share").onclick = function(){
-    var b = $("share"), old = b.textContent;
-    try { navigator.clipboard.writeText(location.href).then(function(){ b.textContent = "Ссылка скопирована"; setTimeout(function(){b.textContent=old},2000); }, function(){ b.textContent = "Скопируйте адрес из строки браузера"; }); }
-    catch(e){ b.textContent = "Скопируйте адрес из строки браузера"; }
-  };
+  ["share","share2"].forEach(function(id){
+    $(id).onclick = function(){
+      var b = $(id), old = b.textContent;
+      try { navigator.clipboard.writeText(location.href).then(function(){ b.textContent = "Ссылка скопирована"; setTimeout(function(){b.textContent=old},2000); }, function(){ b.textContent = "Скопируйте адрес из строки браузера"; }); }
+      catch(e){ b.textContent = "Скопируйте адрес из строки браузера"; }
+    };
+  });
 
   // отправка заявки
   $("f").addEventListener("submit", function(ev){
