@@ -401,7 +401,7 @@ var CONFIG = {
     var name = $("name").value.trim(), phone = $("phone").value.trim(), email = $("email").value.trim();
     var total = 0; COLORS.forEach(function(c){ total += want[c.key]; });
     function fail(msg){ err.hidden = false; err.textContent = msg; }
-    if (name.split(/\s+/).length < 2) return fail("Укажите фамилию и имя полностью.");
+    if (!name) return fail("Укажите фамилию и имя.");
     if (phone.replace(/\D/g, "").length < 10) return fail("Укажите телефон с кодом, например +7 900 000-00-00.");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail("Укажите почту в формате name@example.com.");
     if (total < 1) return fail("Выберите хотя бы одну кружку.");
