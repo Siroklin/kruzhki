@@ -118,6 +118,7 @@ legend{font-weight:700;font-size:15px;padding:0;margin-bottom:8px}
 .qty button{width:44px;height:44px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--fg);font-size:22px;font-weight:800;cursor:pointer}
 .qty button:disabled{opacity:.35;cursor:default}
 .qty output{min-width:32px;text-align:center;font-weight:800;font-size:20px}
+.how{margin:0 0 16px;border-left:6px solid var(--accent)}
 .hint{font-size:14px;color:var(--muted);font-weight:400}
 .err{color:var(--accent);font-size:14px;font-weight:700}
 .ok{font-weight:700}
@@ -221,9 +222,9 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
   <h2>Четыре шага до кружки</h2>
   <div class="steps">
     <div class="box"><h3>Предзаказ</h3><p>Заполните форму ниже. Оплата сейчас не требуется.</p></div>
-    <div class="box"><h3>Подтверждение</h3><p>Мы свяжемся, подтвердим заказ и договоримся об оплате.</p></div>
-    <div class="box"><h3>Партия приезжает</h3><p>В начале декабря. Мы сообщим вам сразу.</p></div>
-    <div class="box"><h3>Получение</h3><p>Отправим вам кружки через Авито Доставку.</p></div>
+    <div class="box"><h3>Подтверждение</h3><p>Мы получим вашу заявку и закрепим кружки за вами.</p></div>
+    <div class="box"><h3>Партия приезжает</h3><p>В начале декабря. Мы сразу напишем вам на Авито.</p></div>
+    <div class="box"><h3>Получение</h3><p>На Авито оплачиваете заказ и оформляете доставку.</p></div>
   </div>
 </section>
 
@@ -231,12 +232,13 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
   <div class="tag">Доставка и оплата</div>
   <h2>Всё через Авито</h2>
   <div class="box avito"><h3>Доставка через Авито</h3><p>Отправляем заказ через Авито Доставку. На Авито вы сами выбираете любую удобную доставку: пункт выдачи, постамат или курьера.</p></div>
-  <div class="box" style="margin-top:16px"><h3>Оплата</h3><p>Цена фиксированная: стоимость кружки умножается на количество. Как оплатить, подскажем после подтверждения заказа.</p></div>
+  <div class="box" style="margin-top:16px"><h3>Оплата</h3><p>Цена фиксированная: стоимость кружки умножается на количество. Оплата проходит на Авито: в начале декабря мы напишем вам там, и вы оплатите заказ.</p></div>
 </section>
 
 <section id="preorder">
   <div class="tag">Предзаказ</div>
   <h2>Закрепите кружки за собой</h2>
+  <div class="box how"><h3>Как работает предзаказ</h3><p>Вы оставляете заявку, оплата сейчас не нужна. В начале декабря, когда кружки приедут, вам придёт сообщение на Авито. Там же вы оплатите заказ и оформите доставку.</p></div>
   <form id="f" novalidate>
     <label for="name">Фамилия и имя <span class="hint">(обязательно)</span>
       <input id="name" autocomplete="name" required placeholder="Например, Иванова Анна">
