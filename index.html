@@ -293,7 +293,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
 /* ======= НАСТРОЙКИ ПРОДАВЦА: впишите свои данные между кавычками ======= */
 var CONFIG = {
   endpoint: "https://script.google.com/macros/s/AKfycbxL3GRwnyNmCeKds8L4sQmUYeMIrDbAB8Z243ZzmzpPYpgLO7kl1GhpjT_8-Hmz1l8Dlg/exec",
-  price: "",          // например "590 ₽" (пусто = показывается «скоро»)
+  price: "399 ₽",          // например "590 ₽" (пусто = показывается «скоро»)
   telegram: "",       // имя без @, например "ivan_mugs"
   phone: "",          // например "+7 900 000-00-00"
   whatsapp: "",       // номер цифрами, например "79000000000"
@@ -425,7 +425,7 @@ var CONFIG = {
         $("f").reset();
         done();
         sent.hidden = false;
-        sent.textContent = "Спасибо! Заявка принята: " + summary + ". Мы скоро свяжемся с вами.";
+        sent.textContent = "Спасибо! Заявка принята: " + summary + ". В начале декабря мы напишем вам на почту или телефон.";
       } else if (d && d.error === "soldout") {
         done(); fail("Пока вы оформляли заявку, часть кружек разобрали. Мы обновили остатки, проверьте выбор и отправьте снова.");
       } else if (d && d.error === "fields") {
