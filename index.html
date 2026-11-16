@@ -325,8 +325,8 @@ var CONFIG = {
   if (CONFIG.sellerName) add("<b>Продавец:</b> " + esc(CONFIG.sellerName));
   if (CONFIG.telegram) add('<b>Telegram:</b> <a href="https://t.me/' + encodeURIComponent(CONFIG.telegram) + '" target="_blank" rel="noopener">@' + esc(CONFIG.telegram) + '</a>');
   if (CONFIG.whatsapp) add('<b>WhatsApp:</b> <a href="https://wa.me/' + encodeURIComponent(CONFIG.whatsapp) + '" target="_blank" rel="noopener">+' + esc(CONFIG.whatsapp) + '</a>');
-  if (CONFIG.phone) add("<b>Телефон:</b> " + esc(CONFIG.phone));
-  if (CONFIG.email) add("<b>Почта:</b> " + esc(CONFIG.email));
+  if (CONFIG.phone) add('<b>Телефон:</b> <a href="tel:' + esc(CONFIG.phone.replace(/[^\d+]/g,"")) + '">' + esc(CONFIG.phone) + '</a>');
+  if (CONFIG.email) add('<b>Почта:</b> <a href="mailto:' + esc(CONFIG.email) + '?subject=' + encodeURIComponent("Новогодние кружки") + '">' + esc(CONFIG.email) + '</a>');
   if (CONFIG.avito) add('<b>Авито:</b> <a href="' + esc(CONFIG.avito) + '" target="_blank" rel="noopener">наше объявление</a>');
   if (!n) add("Контакты появятся здесь совсем скоро. Пока напишите тому, кто прислал вам эту ссылку.");
 
