@@ -29,6 +29,11 @@ a{color:var(--accent)}
 section{padding-block:36px}
 
 .garland{position:relative;height:46px;margin-inline:-16px;overflow:hidden}
+.countdown{display:block;text-align:center;margin:0 auto 14px;padding:8px 14px;max-width:max-content;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--fg);font-size:14px;line-height:1.35;text-decoration:none}
+.countdown[hidden]{display:none}
+.countdown b{color:var(--accent)}
+.countdown u{text-decoration:none;font-weight:700;white-space:nowrap}
+.countdown:hover u{text-decoration:underline}
 .garland::before{content:"";position:absolute;left:-5%;right:-5%;top:-22px;height:44px;border-bottom:3px solid #2a5a45;border-radius:50%}
 .garland b{position:absolute;top:0;width:14px;height:20px;border-radius:50% 50% 55% 55%;transform-origin:top center;animation:blink 1.8s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1;filter:brightness(1.15) drop-shadow(0 0 6px currentColor)}50%{opacity:.45;filter:none}}
@@ -144,6 +149,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
 <div class="snow" id="snow" aria-hidden="true"></div>
 <div class="wrap">
 <div class="garland" id="garland" aria-hidden="true"></div>
+<a class="countdown" id="cd" href="#preorder" hidden></a>
 
 <header class="hero">
   <div>
@@ -312,6 +318,17 @@ var CONFIG = {
 (function(){
   var $ = function(id){return document.getElementById(id)};
   var PER = 25;
+  // обратный отсчёт до Нового года (по московскому времени)
+  (function(){
+    var days = Math.ceil((Date.UTC(2026, 11, 31, 21, 0, 0) - Date.now()) / 86400000);
+    if (days < 1 || days > 90) return;
+    var w = days % 10 === 1 && days % 100 !== 11 ? "день" : (days % 10 >= 2 && days % 10 <= 4 && (days % 100 < 12 || days % 100 > 14) ? "дня" : "дней");
+    var verb = w === "день" ? "остался" : "осталось";
+    var el = $("cd");
+    el.innerHTML = "🎁 До Нового года " + verb + " <b>" + days + " " + w + "</b>, а подарка ещё нет? <u>Успейте заказать кружку →</u>";
+    el.hidden = false;
+  })();
+
   var COLORS = [
     {key:"green", cls:"t-green", color:"var(--c-green)", name:"Пряничный человечек", tone:"зелёная"},
     {key:"red",   cls:"t-red",   color:"var(--c-red)",   name:"Пингвин",             tone:"красная"},
