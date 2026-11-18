@@ -120,6 +120,10 @@ legend{font-weight:700;font-size:15px;padding:0;margin-bottom:8px}
 .qty output{min-width:32px;text-align:center;font-weight:800;font-size:20px}
 .thanks{border-left:6px solid var(--gold)}
 .how{margin:0 0 16px;border-left:6px solid var(--accent)}
+.paynote{display:flex;gap:14px;align-items:center;margin:0 0 16px;padding:18px 20px;border-radius:18px;background:var(--gold);color:#2a1a00;border:3px solid #2a1a00;box-shadow:0 6px 0 rgba(42,26,0,.25)}
+.paynote .pi{font-size:34px;line-height:1;flex:none}
+.paynote b{display:block;font-size:20px;line-height:1.25;margin-bottom:4px}
+.paynote span{font-size:16px;line-height:1.4}
 .hint{font-size:14px;color:var(--muted);font-weight:400}
 .err{color:var(--accent);font-size:14px;font-weight:700}
 .ok{font-weight:700}
@@ -225,14 +229,15 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
     <div class="box"><h3>Предзаказ</h3><p>Заполните форму ниже. Оплата сейчас не требуется.</p></div>
     <div class="box"><h3>Подтверждение</h3><p>Мы получим вашу заявку и закрепим кружки за вами.</p></div>
     <div class="box"><h3>Партия приезжает</h3><p>В начале декабря. Мы сразу напишем вам на почту или телефон.</p></div>
-    <div class="box"><h3>Получение</h3><p>На Авито оплачиваете заказ и оформляете доставку.</p></div>
+    <div class="box"><h3>Получение</h3><p>На Авито оплачиваете заказ и оформляете доставку. <b>Доставка за счёт покупателя.</b></p></div>
   </div>
 </section>
 
 <section id="delivery">
   <div class="tag">Доставка и оплата</div>
   <h2>Всё через Авито</h2>
-  <div class="box avito"><h3>Доставка через Авито</h3><p>Отправляем заказ через Авито Доставку. На Авито вы сами выбираете любую удобную доставку: пункт выдачи, постамат или курьера.</p></div>
+  <div class="paynote" role="note"><div class="pi">📦</div><div><b>Доставку оплачивает покупатель</b><span>Стоимость доставки через Авито вы платите сами при оформлении заказа. В цену кружки она не входит.</span></div></div>
+  <div class="box avito"><h3>Доставка через Авито</h3><p>Отправляем заказ через Авито Доставку. На Авито вы сами выбираете любую удобную доставку: пункт выдачи, постамат или курьера. Её стоимость оплачиваете вы.</p></div>
   <div class="box" style="margin-top:16px"><h3>Оплата</h3><p>Цена фиксированная: стоимость кружки умножается на количество. Оплата проходит на Авито. В начале декабря мы напишем вам на почту или телефон, и дальше вы оплатите заказ там.</p></div>
 </section>
 
