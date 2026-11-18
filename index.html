@@ -255,6 +255,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding-top:24px}
     <fieldset>
       <legend>Сколько кружек каждого цвета</legend>
       <div id="rows"></div>
+      <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Не больше 4 кружек на одного человека, чтобы хватило всем.</p>
     </fieldset>
     <label for="note">Пожелания <span class="hint">(необязательно)</span>
       <textarea id="note" placeholder="Любые пожелания и вопросы, мы всё прочитаем"></textarea>
@@ -337,7 +338,7 @@ var CONFIG = {
     t.type = "button"; t.className = "tile " + c.cls; t.id = "tile-" + c.key;
     t.innerHTML = "<b>" + c.name + "</b><span>" + c.tone + "</span><span class=\"left\" id=\"tl-" + c.key + "\"></span>";
     t.addEventListener("click", function(){
-      if (left[c.key] > want[c.key]) { want[c.key]++; render(); }
+      if (left[c.key] > want[c.key] && totalWant() < MAX) { want[c.key]++; render(); }
       $("preorder").scrollIntoView({behavior:"smooth", block:"start"});
     });
     tiles.appendChild(t);
@@ -351,8 +352,11 @@ var CONFIG = {
       "<button type=\"button\" id=\"p-" + c.key + "\" aria-label=\"Больше: " + c.name + "\">+</button></div>";
     rows.appendChild(r);
     r.querySelector("#m-" + c.key).addEventListener("click", function(){ if (want[c.key] > 0) { want[c.key]--; render(); } });
-    r.querySelector("#p-" + c.key).addEventListener("click", function(){ if (want[c.key] < left[c.key]) { want[c.key]++; render(); } });
+    r.querySelector("#p-" + c.key).addEventListener("click", function(){ if (want[c.key] < left[c.key] && totalWant() < MAX) { want[c.key]++; render(); } });
   });
+
+  var MAX = 4;
+  function totalWant(){ var t = 0; COLORS.forEach(function(c){ t += want[c.key]; }); return t; }
 
   function render(){
     var allSold = true;
@@ -367,7 +371,7 @@ var CONFIG = {
       $("rl-" + k).textContent = sold ? "Распродано" : "осталось " + left[k];
       $("q-" + k).textContent = want[k];
       $("m-" + k).disabled = want[k] <= 0;
-      $("p-" + k).disabled = sold || want[k] >= left[k];
+      $("p-" + k).disabled = sold || want[k] >= left[k] || totalWant() >= MAX;
     });
     $("submitBtn").disabled = allSold;
     if (allSold) { $("sent").hidden = false; $("sent").textContent = "Все кружки распроданы. Спасибо, что были с нами!"; }
@@ -405,6 +409,7 @@ var CONFIG = {
     if (phone.replace(/\D/g, "").length < 10) return fail("Укажите телефон с кодом, например +7 900 000-00-00.");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail("Укажите почту в формате name@example.com.");
     if (total < 1) return fail("Выберите хотя бы одну кружку.");
+    if (total > MAX) return fail("В одной заявке — не больше " + MAX + " кружек.");
     err.hidden = true; sent.hidden = true;
     var payload = {name:name, phone:phone, email:email, note:$("note").value.trim(), qty:{green:want.green, red:want.red, pink:want.pink, blue:want.blue}};
     var summary = COLORS.filter(function(c){ return want[c.key] > 0; }).map(function(c){ return c.name + " (" + c.tone + ") × " + want[c.key]; }).join(", ");
@@ -428,6 +433,8 @@ var CONFIG = {
         sent.textContent = "Спасибо! Заявка принята: " + summary + ". В начале декабря мы напишем вам на почту или телефон.";
       } else if (d && d.error === "soldout") {
         done(); fail("Пока вы оформляли заявку, часть кружек разобрали. Мы обновили остатки, проверьте выбор и отправьте снова.");
+      } else if (d && d.error === "limit") {
+        done(); fail("Можно заказать не больше " + MAX + " кружек на одного человека (по телефону или почте). Если нужно больше — напишите нам.");
       } else if (d && d.error === "fields") {
         done(); fail("Проверьте имя, телефон и почту.");
       } else {
